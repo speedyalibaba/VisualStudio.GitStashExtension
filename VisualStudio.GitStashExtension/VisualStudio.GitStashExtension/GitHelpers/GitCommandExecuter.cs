@@ -79,6 +79,44 @@ namespace VisualStudio.GitStashExtension.GitHelpers
         }
 
         /// <summary>
+        /// Creates stash on current branch(only staged files).
+        /// </summary>
+        /// <param name="message">Save message for stash.</param>
+        /// <param name="errorMessage">Error message.</param>
+        /// <returns>Bool value that indicates whether command execution was succeeded.</returns>
+        public bool TryCreateStashStaged(string message, out string errorMessage)
+        {
+            errorMessage = string.Empty;
+
+            // Stash everything temporarily.  Keep staged files, discard everything else after stashing.
+            var commandResult = ExecuteWithCmd(GitCommandConstants.StashAllKeepStaged);
+            if (commandResult.IsError)
+            {
+                errorMessage = commandResult.ErrorMessage;
+                return false;
+            }
+
+            // Stash everything that remains (only the staged files should remain)  This is the stash we want to keep, so give it a name.
+            if (!TryCreateStash(message, out errorMessage))
+                return false;
+
+            // Apply the original stash to get us back to where we started.
+            if (!TryApplyStash(1, out errorMessage))
+                return false;
+
+            //Create a temporary patch to reverse the originally staged changes and apply it
+            commandResult = ExecuteWithCmd(GitCommandConstants.CreatePatchAndApply, true);
+            if (commandResult.IsError)
+            {
+                errorMessage = commandResult.ErrorMessage;
+                return false;
+            }
+
+            //Delete the temporary stash
+            return TryDeleteStash(1, out errorMessage);
+        }
+
+        /// <summary>
         /// Delete stash by id.
         /// </summary>
         /// <param name="id">Stash id.</param>
@@ -222,7 +260,7 @@ namespace VisualStudio.GitStashExtension.GitHelpers
         /// </summary>
         /// <param name="gitCommand"></param>
         /// <returns></returns>
-        private GitCommandResult ExecuteWithCmd(string gitCommand)
+        private GitCommandResult ExecuteWithCmd(string gitCommand, bool isCmdCommand = false)
         {
             try
             {
@@ -231,7 +269,7 @@ namespace VisualStudio.GitStashExtension.GitHelpers
                     return new GitCommandResult {ErrorMessage = Constants.UnknownRepositoryErrorMessage };
 
                 var gitExePath = GitPathHelper.GetGitPath();
-                var cmdCommand = "/C \"\"" + (gitExePath ?? "git.exe") + "\" " + gitCommand + "\"";
+                var cmdCommand = isCmdCommand ? "/C \"" + gitCommand + "\"" : "/C \"\"" + (gitExePath ?? "git.exe") + "\" " + gitCommand + "\"";
 
                 var gitStartInfo = new ProcessStartInfo
                 {

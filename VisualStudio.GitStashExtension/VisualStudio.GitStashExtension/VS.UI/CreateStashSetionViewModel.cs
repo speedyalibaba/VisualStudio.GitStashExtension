@@ -40,9 +40,10 @@ namespace VisualStudio.GitStashExtension.VS.UI
             _gitCommandExecuter = new GitCommandExecuter(serviceProvider);
         }
 
-        public void CreateStash()
+        public void CreateStash(bool onlyStaged)
         {
-            if (_gitCommandExecuter.TryCreateStash(_message, out var errorMessage))
+            string errorMessage = string.Empty;
+            if ((!onlyStaged && _gitCommandExecuter.TryCreateStash(_message, out errorMessage)) || (onlyStaged && _gitCommandExecuter.TryCreateStashStaged(_message, out errorMessage)))
             {
                 _teamExplorer.CurrentPage.RefreshPageAndSections();
             }

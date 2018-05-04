@@ -36,7 +36,7 @@ namespace VisualStudio.GitStashExtension.VS.UI
 
         private void CreateStashButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.CreateStash();
+            _viewModel.CreateStash(OnlyStagedCheckBox.IsChecked ?? false);
         }
     }
 }

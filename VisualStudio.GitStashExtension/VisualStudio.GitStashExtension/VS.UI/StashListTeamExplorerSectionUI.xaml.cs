@@ -55,9 +55,14 @@ namespace VisualStudio.GitStashExtension.VS.UI
             var menuItem = sender as MenuItem;
             var stashId = menuItem.Tag as int?;
 
-            if (stashId.HasValue)
+            var doalogResult = MessageBox.Show("SourceControl - Git" + Environment.NewLine + Environment.NewLine + "Are you sure you want to apply the stash " + menuItem.DisplayMemberPath + "?", "Microsoft Visual Studio", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+
+            if (doalogResult == MessageBoxResult.Yes)
             {
-                _viewModel.ApplyStash(stashId.Value);
+                if (stashId.HasValue)
+                {
+                    _viewModel.ApplyStash(stashId.Value);
+                }
             }
         }
 
@@ -66,9 +71,14 @@ namespace VisualStudio.GitStashExtension.VS.UI
             var menuItem = sender as MenuItem;
             var stashId = menuItem.Tag as int?;
 
-            if (stashId.HasValue)
+            var doalogResult = MessageBox.Show("SourceControl - Git" + Environment.NewLine + Environment.NewLine + "Are you sure you want to delete the stash " + menuItem.DisplayMemberPath + "?", "Microsoft Visual Studio", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+
+            if (doalogResult == MessageBoxResult.Yes)
             {
-                _viewModel.DeleteStash(stashId.Value);
+                if (stashId.HasValue)
+                {
+                    _viewModel.DeleteStash(stashId.Value);
+                }
             }
         }
 

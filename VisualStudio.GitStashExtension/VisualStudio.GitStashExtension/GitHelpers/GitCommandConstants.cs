@@ -11,6 +11,8 @@
 
         public const string Stash = "stash";
 
+        public const string StashAllKeepStaged = "stash --keep-index";
+
         public const string StashSaveFormatted = "stash save {0}";
 
         public const string StashDeleteFormatted = "stash drop stash@{{{0}}}";
@@ -22,5 +24,7 @@
         public const string AfterStashFileVersionSaveTempFormatted = "show stash@{{{0}}}:\"{1}\" > {2}";
 
         public const string BeforeStashFileVersionSaveTempFormatted = "show stash@{{{0}}}^^:\"{1}\" > {2}";
+
+        public const string CreatePatchAndApply = "git stash show -p | git apply -R";
     }
 }

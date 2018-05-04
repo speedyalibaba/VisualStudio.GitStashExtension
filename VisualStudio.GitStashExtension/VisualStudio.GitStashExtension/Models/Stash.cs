@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using VisualStudio.GitStashExtension.Annotations;
 
 namespace VisualStudio.GitStashExtension.Models
 {
@@ -26,5 +31,7 @@ namespace VisualStudio.GitStashExtension.Models
         /// List of changed files.
         /// </summary>
         public IList<ChangedFile> ChangedFiles { get; set; }
+
+        public string DisplayName => "On " + BranchName + ": " + Message;
     }
 }

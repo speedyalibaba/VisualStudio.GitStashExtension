@@ -16,9 +16,12 @@
 	</UserControl.Resources>
 
 	<StackPanel Orientation="Vertical" Margin="0 0 0 10">
-		<Border BorderThickness="1" BorderBrush="{StaticResource TextBoxBorderColor}" VerticalAlignment="Top" Margin="15 10 10 10">
+        <Border BorderThickness="1" BorderBrush="{StaticResource TextBoxBorderColor}" VerticalAlignment="Top" Margin="15 10 10 10">
             <TextBox x:Name="MessageTextBox" Text="{Binding Message}" BorderThickness="0" Margin="0 3 0 3" Style="{DynamicResource TextBoxStyle}"></TextBox>
-		</Border>
-		<Button x:Name="CreateStashButton" Click="CreateStashButton_Click" Content="Create stash" Width="auto" Height="Auto" Padding="5" Margin="15 5 5 5" HorizontalAlignment="Left"></Button>
-	</StackPanel>
+        </Border>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="CreateStashButton" Click="CreateStashButton_Click" Content="Create stash" Width="auto" Height="Auto" Padding="5" Margin="15 5 5 5" HorizontalAlignment="Left"></Button>
+            <CheckBox x:Name="OnlyStagedCheckBox" Content="only staged files" Width="Auto" Height="Auto" Margin="5 5 5 5" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        </StackPanel>
+    </StackPanel>
 </UserControl>
